@@ -1,0 +1,1142 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>假日飛走</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Huninn&family=Nunito:wght@600;800&family=Noto+Sans+TC:wght@400;500;700&display=swap">
+<style>
+/* Layout: family trip planner — sky header band, then who (family) → when (holidays & school breaks) → where → compare → links */
+:root{
+  --bg:#f2f7fb; --surface:#ffffff; --sunk:#e8f0f7; --ink:#1c2b3a; --muted:#5b6b7c; --line:#d6e2ec;
+  --accent:#1f78d1; --accent-ink:#ffffff; --accent-soft:#e0eefb;
+  --deal:#a86400; --deal-soft:#fff2cc; --kid:#d4482c; --kid-soft:#ffe8e1; --bad:#b3261e;
+  --sky1:#d9ecff; --sky2:#f2f7fb;
+  --f-display:"Huninn","Noto Sans TC",system-ui,sans-serif;
+  --f-body:"Noto Sans TC",system-ui,-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;
+  --f-mono:"Nunito","Noto Sans TC",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f1720; --surface:#17222e; --sunk:#1e2c3a; --ink:#e6eef6; --muted:#9aabbd; --line:#2a3a4b;
+  --accent:#63aaf5; --accent-ink:#071a2e; --accent-soft:#173351;
+  --deal:#ffc04d; --deal-soft:#3b2c0c; --kid:#ff8a70; --kid-soft:#3e2019; --bad:#ff8a80;
+  --sky1:#132a42; --sky2:#0f1720; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1720; --surface:#17222e; --sunk:#1e2c3a; --ink:#e6eef6; --muted:#9aabbd; --line:#2a3a4b;
+  --accent:#63aaf5; --accent-ink:#071a2e; --accent-soft:#173351;
+  --deal:#ffc04d; --deal-soft:#3b2c0c; --kid:#ff8a70; --kid-soft:#3e2019; --bad:#ff8a80;
+  --sky1:#132a42; --sky2:#0f1720; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:1040px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+h1,h2,h3{margin:0;text-wrap:balance}
+.brand{position:relative;overflow:hidden;border-radius:22px;background:linear-gradient(180deg,var(--sky1),var(--sky2));padding:22px 22px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand h1{font-family:var(--f-display);font-weight:400;font-size:2.5rem;letter-spacing:.06em;line-height:1.1}
+.brand p{margin:6px 0 0;color:var(--muted);font-size:.95rem;max-width:34em}
+.brand svg{flex:none;width:180px;max-width:38%;height:auto}
+@media (max-width:520px){.brand h1{font-size:2rem}.brand svg{width:110px}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:18px 20px;display:flex;flex-direction:column;gap:14px}
+.panel-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 12px}
+.panel-head h2{font-family:var(--f-display);font-weight:400;font-size:1.3rem;display:flex;align-items:center;gap:10px}
+.panel-head h2 span{font-family:var(--f-mono);font-weight:800;background:var(--accent);color:var(--accent-ink);font-size:.8rem;width:26px;height:26px;border-radius:50%;display:inline-grid;place-items:center}
+.row{display:flex;flex-wrap:wrap;gap:12px 18px;align-items:flex-end}
+.field{display:flex;flex-direction:column;gap:4px}
+.field>label,.eyebrow{font-size:.72rem;letter-spacing:.08em;color:var(--muted);font-weight:500}
+select,input[type=date],input[type=text]{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:7px 10px;min-width:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.step{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.step button{font:inherit;width:42px;height:42px;border:0;background:var(--sunk);color:var(--ink);cursor:pointer;font-size:1.05rem}
+.step button:disabled{opacity:.4;cursor:default}
+.step output{min-width:36px;text-align:center;font-family:var(--f-mono);font-weight:800;font-size:1.05rem}
+.ages{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.ages select{padding:5px 6px;font-size:.85rem}
+.hint{color:var(--muted);font-size:.82rem;margin:0}
+.seg{display:inline-flex;background:var(--sunk);border-radius:999px;padding:3px;gap:2px;flex-wrap:wrap}
+.seg button{font:inherit;font-size:.85rem;border:0;background:transparent;color:var(--muted);padding:5px 14px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--surface);color:var(--ink);font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,.12)}
+.nights{font-family:var(--f-mono);font-weight:700;padding-bottom:8px}
+.quick{display:flex;flex-direction:column;gap:8px}
+.quick-head{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.hchips{display:flex;flex-wrap:wrap;gap:6px}
+.hchip{font:inherit;font-size:.85rem;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:5px 10px;display:inline-flex;gap:6px;align-items:baseline}
+.hchip .d{font-family:var(--f-mono);font-size:.74rem;color:var(--muted)}
+.hchip .n{font-size:.72rem;font-weight:700;color:var(--accent)}
+.hchip.long .n{color:var(--deal)}
+.hchip[aria-pressed=true]{border-color:var(--accent);background:var(--accent-soft)}
+.hchip.school{border-color:var(--kid);background:var(--kid-soft)}
+.hchip.school .n{color:var(--kid)}
+.hchip.school[aria-pressed=true]{outline:2px solid var(--kid);outline-offset:1px}
+.who{display:flex;flex-wrap:wrap;gap:8px}
+.who span{font-size:.8rem;background:var(--kid-soft);color:var(--kid);border-radius:999px;padding:2px 10px;font-weight:700}
+.family{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;padding:10px 14px;border-radius:14px;background:var(--kid-soft)}
+.family .eyebrow{color:var(--kid);font-weight:700}
+.dgrid{display:flex;flex-direction:column;gap:7px}
+.dg{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.dg .eyebrow{width:54px;flex:none}
+.chip{font:inherit;font-size:.9rem;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:4px 11px 4px 10px;display:inline-flex;gap:6px;align-items:center}
+.chip code{font-family:var(--f-mono);font-size:.72rem;color:var(--muted)}
+.chip[hidden]{display:none!important}
+.chip[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.chip[aria-pressed=true] code{color:var(--accent-ink);opacity:.85}
+.legs{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px}
+.leg{border:1px solid var(--line);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.leg h3{font-size:.8rem;font-weight:700;display:flex;gap:8px;align-items:center}
+.leg h3 .tag{font-family:var(--f-mono);font-size:.7rem;background:var(--sunk);color:var(--muted);padding:1px 6px;border-radius:5px}
+.leg select{width:100%}
+.flows{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.flow{font:inherit;text-align:left;cursor:pointer;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:12px 14px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.flow:hover{border-color:var(--accent)}
+.flow[aria-pressed=true]{border-color:var(--accent);background:var(--accent-soft)}
+.flow b{font-size:1rem}
+.flow span{font-size:.82rem;color:var(--muted)}
+.pane{display:flex;flex-direction:column;gap:10px;border-top:1px solid var(--line);padding-top:12px}
+.pane-head{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;justify-content:space-between}
+.picked{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:.84rem}
+.picked b{font-family:var(--f-mono)}
+@media (max-width:520px){.flows{grid-template-columns:1fr}}
+.picked button{font:inherit;font-size:.82rem;cursor:pointer;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:2px 8px}
+.picked button.main{border-color:var(--deal);color:var(--deal);font-weight:700}
+.check{display:flex;gap:8px;align-items:center;font-size:.88rem;cursor:pointer}
+.check input{width:18px;height:18px;accent-color:var(--accent)}
+.custom-dest{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.custom-dest input{width:120px}
+/* compare console */
+.summary{display:flex;flex-wrap:wrap;align-items:center;gap:8px 18px;padding:12px 16px;border-radius:14px;background:var(--sunk)}
+.summary .rt{font-family:var(--f-mono);font-weight:800;font-size:1.5rem;letter-spacing:.02em;line-height:1.2}
+.summary .rt i{font-style:normal;color:var(--accent);margin:0 6px;font-size:1.1rem}
+.summary .meta{font-family:var(--f-mono);font-size:.86rem;font-weight:700}
+.modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.mode[hidden]{display:none!important}
+.mode{font:inherit;text-align:left;cursor:pointer;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.mode:hover{border-color:var(--accent)}
+.mode[aria-pressed=true]{border-color:var(--accent);background:var(--accent-soft)}
+.mode b{font-size:1rem}
+.mode .q{font-size:.83rem;color:var(--ink)}
+.mode .c{font-size:.74rem;color:var(--muted);font-family:var(--f-mono)}
+.mode-opts{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+.mode-opts[hidden]{display:none!important}
+.go-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{font:inherit;font-size:1rem;font-weight:700;cursor:pointer;border-radius:999px;padding:12px 24px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-ink)}
+.btn.ghost{background:transparent;color:var(--accent);padding:7px 12px;font-size:.85rem}
+.btn.stop{border-color:var(--bad);color:var(--bad);background:transparent}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+/* results */
+.results{display:flex;flex-direction:column;gap:16px}
+.results[hidden]{display:none!important}
+.status{font-size:.85rem;color:var(--muted);display:flex;gap:8px;align-items:center}
+.spin{width:12px;height:12px;border-radius:50%;border:2px solid var(--line);border-top-color:var(--accent);animation:sp 1s linear infinite;flex:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation:none}}
+.res-h{font-size:.92rem;font-weight:700;display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.res-h small{font-weight:400;color:var(--muted);font-size:.78rem}
+.rank{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.ri{display:grid;grid-template-columns:34px minmax(0,1fr) auto auto;gap:12px;align-items:center;padding:10px 12px;border-top:1px solid var(--line)}
+.ri:first-child{border-top:0}
+.ri .no{width:26px;height:26px;border-radius:50%;background:var(--sunk);color:var(--muted);font-family:var(--f-mono);font-weight:700;font-size:.8rem;display:grid;place-items:center}
+.ri .what{min-width:0}
+.ri .what b{display:block;font-size:.95rem}
+.ri .what small{display:block;color:var(--muted);font-size:.78rem;overflow-wrap:anywhere}
+.ri .amt{text-align:right;white-space:nowrap}
+.ri .amt b{display:block;font-family:var(--f-mono);font-size:1.08rem;font-variant-numeric:tabular-nums}
+.ri .amt small{display:block;color:var(--muted);font-size:.74rem;font-family:var(--f-mono)}
+.ri .open{font-size:.82rem;color:var(--accent);text-decoration:none;font-weight:700;white-space:nowrap}
+.ri .open:hover{text-decoration:underline}
+.ri.best{background:var(--deal-soft)}
+.ri.best .no{background:var(--deal);color:var(--surface)}
+.ri.best .amt b{color:var(--deal)}
+.ri.wait .amt b{color:var(--muted);font-size:.85rem;font-family:var(--f-body)}
+.ri.fail .amt b{color:var(--bad);font-size:.82rem;font-family:var(--f-body)}
+.badge{display:inline-block;font-size:.68rem;font-weight:700;color:var(--deal);border:1px solid var(--deal);border-radius:5px;padding:0 5px;margin-left:6px;vertical-align:middle}
+.total{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;padding:14px;border-radius:12px;background:var(--sunk)}
+.total .v{font-family:var(--f-mono);font-size:1.3rem;font-weight:700;font-variant-numeric:tabular-nums}
+.total .v.deal{color:var(--deal)}
+.grid-wrap{overflow-x:auto}
+table.grid{border-collapse:collapse;font-size:.85rem}
+table.grid th,table.grid td{border:1px solid var(--line);padding:8px 10px;text-align:center;white-space:nowrap}
+table.grid th{font-size:.74rem;color:var(--muted);font-weight:500;background:var(--sunk)}
+table.grid td{font-family:var(--f-mono);font-variant-numeric:tabular-nums;font-weight:700}
+table.grid td a{color:inherit;text-decoration:none}
+table.grid td.best{background:var(--deal-soft);color:var(--deal)}
+table.grid td.na{color:var(--muted);font-weight:400}
+.bars{display:flex;flex-direction:column;gap:6px}
+.bar{display:grid;grid-template-columns:minmax(0,170px) minmax(0,1fr) 96px;gap:10px;align-items:center;font-size:.83rem}
+.bar .lab{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:var(--f-mono);font-size:.78rem}
+.bar .track{height:10px;background:var(--sunk);border-radius:5px;overflow:hidden}
+.bar .fill{height:100%;background:var(--accent);border-radius:5px}
+.bar.best .fill{background:var(--deal)}
+.bar .p{font-family:var(--f-mono);font-weight:700;text-align:right}
+.bar.best .p{color:var(--deal)}
+.manual-note{margin:0;font-size:.85rem;color:var(--ink);background:var(--accent-soft);border-radius:12px;padding:10px 14px}
+.wizard{border:2px solid var(--accent);border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:12px;background:var(--surface)}
+.wizard .wz-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 12px;align-items:baseline}
+.wizard .wz-step{font-family:var(--f-mono);font-weight:800;color:var(--accent);font-size:.85rem}
+.wizard h3{font-family:var(--f-display);font-weight:400;font-size:1.25rem}
+.wizard .wz-row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.wizard .wz-num{display:flex;align-items:center;border:2px solid var(--line);border-radius:12px;padding:0 10px;background:var(--surface)}
+.wizard .wz-num:focus-within{border-color:var(--accent)}
+.wizard .wz-num span{font-family:var(--f-mono);font-weight:800;color:var(--muted)}
+.wizard .wz-num input{font:inherit;font-family:var(--f-mono);font-weight:800;font-size:1.2rem;width:9ch;border:0;background:transparent;color:var(--ink);padding:9px 6px;outline:none}
+.wizard textarea{font:inherit;font-size:.82rem;width:100%;min-height:76px;border:1px dashed var(--line);border-radius:12px;padding:8px 10px;background:var(--sunk);color:var(--ink);resize:vertical}
+.wizard .cands{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.wizard .cands button{font:inherit;font-family:var(--f-mono);font-weight:800;font-size:.86rem;cursor:pointer;border:1px solid var(--line);background:var(--sunk);color:var(--ink);border-radius:999px;padding:3px 12px}
+.wizard .cands button:hover{border-color:var(--accent)}
+.wizard .tip{font-size:.82rem;color:var(--muted);margin:0}
+.wizard a.btn{text-decoration:none;display:inline-block}
+.notice{border:1px solid var(--bad);border-radius:10px;padding:10px 12px;font-size:.86rem}
+/* links */
+.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.lgroup{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.lgroup h3{font-size:.76rem;letter-spacing:.08em;color:var(--muted);font-weight:500;margin-bottom:4px}
+.lk{display:flex;justify-content:space-between;gap:8px;align-items:baseline;text-decoration:none;color:var(--ink);padding:6px 0;border-top:1px solid var(--line)}
+.lk:first-of-type{border-top:0}
+.lk span{font-size:.75rem;color:var(--muted);text-align:right}
+.lk:hover b{color:var(--accent)}
+.lrow{display:flex;flex-direction:column;gap:6px;padding:8px 0;border-top:1px solid var(--line)}
+.lrow:first-of-type{border-top:0}
+.lrow .lk{border-top:0;padding:0}
+.lrow .lk b::after{content:" ↗";font-weight:400;color:var(--muted);font-size:.8em}
+.snap{display:flex;gap:10px;align-items:flex-start;justify-content:space-between;font-size:.8rem;min-width:0}
+.snap .sbtn{font:inherit;font-size:.76rem;cursor:pointer;border:1px dashed var(--line);background:transparent;color:var(--accent);border-radius:6px;padding:2px 8px}
+.snap .sbtn:disabled{opacity:.5;cursor:not-allowed}
+.snap .na{color:var(--muted);font-size:.76rem}
+.snap .card{flex:1;min-width:0;background:var(--sunk);border-radius:8px;padding:6px 9px;display:grid;grid-template-columns:auto minmax(0,1fr);gap:2px 10px;align-items:baseline}
+.snap .card .pr{font-family:var(--f-mono);font-weight:700;font-size:1rem;color:var(--ink);white-space:nowrap}
+.snap .card .pr.best{color:var(--deal)}
+.snap .card .u{color:var(--muted);font-size:.72rem}
+.snap .card .tops{grid-column:1 / -1;color:var(--muted);font-size:.76rem;line-height:1.45;overflow-wrap:anywhere}
+.snap .card .tm{grid-column:1 / -1;color:var(--muted);font-size:.68rem;font-family:var(--f-mono)}
+.snap .card.err{display:block;color:var(--bad);background:transparent;border:1px solid var(--line)}
+.snap .card.load{display:flex;gap:8px;align-items:center;color:var(--muted)}
+.links-bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+details.hist summary{cursor:pointer;color:var(--muted);font-size:.85rem}
+.hist-list{display:flex;flex-direction:column;gap:2px;margin-top:8px;font-size:.84rem}
+.hist-list div{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding:4px 0}
+.hist-list b{font-family:var(--f-mono)}
+footer{color:var(--muted);font-size:.78rem}
+@media (max-width:760px){.modes{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){
+  .ri{grid-template-columns:28px minmax(0,1fr) auto}
+  .ri .open{grid-column:2 / -1;justify-self:start}
+  .bar{grid-template-columns:minmax(0,110px) minmax(0,1fr) 84px}
+  .dg .eyebrow{width:100%}
+}
+</style>
+
+<div class="wrap">
+  <header class="brand">
+    <div>
+      <h1>假日飛走</h1>
+      <p>帶孩子出國不用開十個分頁。挑好連假或寒暑假、想去的地方，一次比出全家機票＋住宿最划算的組合。</p>
+    </div>
+    <svg viewBox="0 0 180 110" aria-hidden="true">
+      <path d="M8 92 C 40 92, 52 40, 92 48 S 140 86, 160 30" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="5 7" stroke-linecap="round" opacity=".55"/>
+      <g fill="var(--surface)" opacity=".95"><ellipse cx="44" cy="30" rx="22" ry="11"/><ellipse cx="60" cy="24" rx="15" ry="12"/><ellipse cx="128" cy="86" rx="20" ry="9"/><ellipse cx="142" cy="81" rx="12" ry="10"/></g>
+      <g transform="translate(150 22) rotate(-28)"><path d="M-16 0 L16 -2 Q22 0 16 2 L-16 0 Z" fill="var(--accent)"/><path d="M-2 -1 L-10 -14 L-4 -14 L8 -1 Z M-2 1 L-10 14 L-4 14 L8 1 Z M-14 -1 L-18 -7 L-15 -7 L-10 -1 Z" fill="var(--accent)"/></g>
+      <circle cx="18" cy="92" r="5" fill="var(--kid)"/>
+    </svg>
+  </header>
+
+  <!-- 01 who -->
+  <section class="panel" aria-labelledby="h1">
+    <div class="panel-head"><h2 id="h1"><span>1</span>誰要去・從哪出發</h2></div>
+    <div class="row">
+      <div class="field"><label for="origin">出發機場</label>
+        <select id="origin"><option value="TPE">桃園 TPE</option><option value="TSA">松山 TSA</option><option value="KHH">高雄 KHH</option><option value="RMQ">台中 RMQ</option></select></div>
+      <div class="field"><label>大人</label><div class="step" data-k="adults" data-min="1" data-max="9"><button aria-label="大人減一">−</button><output>2</output><button aria-label="大人加一">＋</button></div></div>
+      <div class="field"><label>小孩 2–11 歲</label><div class="step" data-k="kids" data-min="0" data-max="6"><button aria-label="小孩減一">−</button><output>0</output><button aria-label="小孩加一">＋</button></div></div>
+      <div class="field"><label>寶寶 未滿 2 歲</label><div class="step" data-k="infants" data-min="0" data-max="4"><button aria-label="寶寶減一">−</button><output>0</output><button aria-label="寶寶加一">＋</button></div></div>
+      <div class="field"><label>房間</label><div class="step" data-k="rooms" data-min="1" data-max="5"><button aria-label="房間減一">−</button><output>1</output><button aria-label="房間加一">＋</button></div></div>
+    </div>
+    <div class="ages" id="ages" hidden><span class="eyebrow">小孩幾歲（訂房會用到，有些飯店小小孩免費）</span></div>
+  </section>
+
+  <!-- 02 when -->
+  <section class="panel" aria-labelledby="h2">
+    <div class="panel-head"><h2 id="h2"><span>2</span>什麼時候放假</h2></div>
+    <div class="row">
+      <div class="field"><label for="d-start">去程日期</label><input id="d-start" type="date"></div>
+      <div class="field"><label for="d-end">回程日期</label><input id="d-end" type="date"></div>
+      <div class="nights" id="nights">—</div>
+    </div>
+    <div class="quick">
+      <div class="quick-head">
+        <span class="eyebrow">快選連假（點了會填入上面日期，之後仍可自己改）</span>
+        <div class="seg" role="group" aria-label="是否請假">
+          <button id="lv-off" aria-pressed="true">只放國定假</button>
+          <button id="lv-on" aria-pressed="false">請假湊長假</button>
+        </div>
+      </div>
+      <div class="hchips" id="hchips"></div>
+      <p class="hint">依人事行政總處 116 年辦公日曆表整理；請假方案依週末推算，實際以公司規定為準。</p>
+    </div>
+  </section>
+
+  <!-- 03 where -->
+  <section class="panel" aria-labelledby="h3">
+    <div class="panel-head"><h2 id="h3"><span>3</span>想飛去哪</h2><div class="seg" role="group" aria-label="飛行時間"><button id="fh-all" aria-pressed="true">全部</button><button id="fh-short" aria-pressed="false">飛 4 小時內</button></div></div>
+    <div class="flows" role="group" aria-label="決定了目的地嗎">
+      <button class="flow" id="fl-multi"><b>還沒決定・比較多個地點</b><span>選 2–8 個想去的地方，看哪裡最便宜</span></button>
+      <button class="flow" id="fl-single"><b>已經決定・一個目的地</b><span>比各網站價格、比出發日期、比連假</span></button>
+    </div>
+
+    <div id="pane-multi" class="pane">
+      <div class="pane-head"><span class="eyebrow">點選想比較的地點（可多選）</span><span class="picked" id="picked"></span></div>
+      <div id="where-multi" class="dgrid"></div>
+    </div>
+
+    <div id="pane-single" class="pane" hidden>
+      <div class="pane-head">
+        <div class="seg" role="group" aria-label="行程類型">
+          <button id="tt-rt" aria-pressed="true">同一城市進出</button>
+          <button id="tt-oj" aria-pressed="false">不同城市進出</button>
+        </div>
+      </div>
+      <div id="where-one" class="dgrid"></div>
+      <div id="where-oj" class="legs" hidden>
+        <div class="leg"><h3><span class="tag">去程</span>飛到</h3><select id="oj-in" aria-label="去程目的地"></select></div>
+        <div class="leg"><h3><span class="tag">回程</span>從這裡飛回</h3><select id="oj-out" aria-label="回程出發城市"></select></div>
+        <p class="hint" style="grid-column:1/-1">例如去程飛東京、回程從大阪飛回。比價時兩段單程分開查再加總。</p>
+      </div>
+    </div>
+
+    <div class="custom-dest">
+      <span class="eyebrow">清單沒有？</span>
+      <input id="c-code" type="text" maxlength="3" placeholder="機場代碼 如 HAN" aria-label="機場代碼">
+      <input id="c-name" type="text" placeholder="城市名 如 河內" aria-label="城市名">
+      <button id="c-add" class="btn ghost">加入</button>
+    </div>
+  </section>
+
+  <!-- 04 compare -->
+  <section class="panel" aria-labelledby="h4">
+    <div class="panel-head"><h2 id="h4"><span>4</span>開始比價</h2><span class="hint">需在 Claude 桌面版開啟</span></div>
+    <div class="summary">
+      <div class="rt" id="sum-rt">TPE</div>
+      <div class="meta" id="sum-meta">—</div>
+    </div>
+    <div class="family" role="group" aria-label="帶小孩的選項">
+      <span class="eyebrow">帶小孩更輕鬆</span>
+      <label class="check"><input type="checkbox" id="o-direct"> 只看直飛</label>
+      <label class="check"><input type="checkbox" id="o-redeye"> 避開紅眼班（凌晨起飛或半夜才到）</label>
+    </div>
+    <div class="modes" role="group" aria-label="比價方式">
+      <button class="mode" data-m="dests" data-flow="multi"><b>比地點</b><span class="q" id="q-dests"></span><span class="c" id="c-dests"></span></button>
+      <button class="mode" data-m="site" data-flow="single"><b>比網站</b><span class="q" id="q-site"></span><span class="c" id="c-site"></span></button>
+      <button class="mode" data-m="dates" data-flow="single"><b>比日期</b><span class="q" id="q-dates"></span><span class="c" id="c-dates"></span></button>
+      <button class="mode" data-m="hols" data-flow="both"><b>比連假</b><span class="q" id="q-hols"></span><span class="c" id="c-hols"></span></button>
+    </div>
+    <div class="mode-opts" id="opt-dates" hidden>
+      <div class="field"><label for="fx-out">去程彈性</label><select id="fx-out"><option value="0">當天</option><option value="1">前後 1 天</option><option value="2">前後 2 天</option></select></div>
+      <div class="field"><label for="fx-ret">回程彈性</label><select id="fx-ret"><option value="0">當天</option><option value="1">前後 1 天</option><option value="2">前後 2 天</option></select></div>
+      <p class="hint" style="flex-basis:100%">查 Google 航班，每個日期組合各查一次；彈性天數越多越久，可隨時停止。</p>
+    </div>
+    <div class="mode-opts" id="opt-dests" hidden>
+      <label class="check"><input type="checkbox" id="w-hotel"> 一起查住宿（Booking.com，查詢次數加倍）</label>
+    </div>
+    <div class="mode-opts" id="opt-hols" hidden>
+      <div class="field"><label for="hol-n">要比的連假</label><select id="hol-n"><option value="3">最近 3 個</option><option value="5">最近 5 個</option><option value="8">最近 8 個</option><option value="99">全部</option></select></div>
+      <p class="hint" style="flex-basis:100%">只比機票（Google 航班）。連假越多越久，可以隨時按停止，已查到的會保留。</p>
+    </div>
+    <div class="go-row">
+      <button class="btn" id="go">開始比價</button>
+      <button class="btn stop" id="stop" hidden>停止</button>
+      <label class="check" id="man-box"><input type="checkbox" id="o-manual"> 手動模式</label>
+      <span class="hint" id="go-hint"></span>
+    </div>
+    <p class="manual-note" id="man-note" hidden>手動模式：會一步一步幫你打開該查的網頁，你看到最便宜的價格後填回來（或整頁複製貼上，自動幫你找價格）。全部填完，這裡就會排出最划算的組合。</p>
+    <div id="wizard" class="wizard" hidden></div>
+    <div id="results" class="results" hidden></div>
+  </section>
+
+  <!-- 05 links -->
+  <section class="block" aria-labelledby="h5" style="display:flex;flex-direction:column;gap:12px">
+    <div class="panel-head"><h2 id="h5"><span>5</span>各網站直接查</h2><span class="hint">已帶入目前條件，手機或網頁上也能用</span></div>
+    <div class="links-bar"><div class="field" id="ld-box" hidden><label for="link-dest">顯示哪個地點</label><select id="link-dest"></select></div><button class="btn ghost" id="snap-all">抓取各網站的結果摘要</button><button class="btn stop" id="snap-stop" hidden style="padding:7px 12px;font-size:.85rem">停止</button><span class="hint" id="snap-hint">需在 Claude 桌面版開啟；也可以只點單一網站下方的「看結果」</span></div>
+    <div id="links" class="links"></div>
+  </section>
+
+  <details class="hist" id="hist-box">
+    <summary>比價紀錄（只存在這台裝置）</summary>
+    <div id="hist" class="hist-list"></div>
+  </details>
+
+  <footer>價格為查詢當下網站顯示的票價。機票以每位大人價計算：小孩以大人價估（多數航空小孩票約 75–100%），寶寶以一成估；廉航常不含託運行李與選位，帶小孩建議加購。下單前請在原網站確認總價與退改規則。寒暑假日期依教育部 115 學年度行事曆，各校可能略有不同。</footer>
+</div>
+
+<script>
+(() => {
+const $ = id => document.getElementById(id);
+const WD = "日一二三四五六";
+
+const HOLIDAYS = [
+  {nm:"行憲紀念日", s:"2026-12-25", e:"2026-12-27"},
+  {nm:"元旦", s:"2027-01-01", e:"2027-01-03"},
+  {nm:"寒假（避開春節）", s:"2027-01-21", e:"2027-01-26", school:4},
+  {nm:"春節", s:"2027-02-04", e:"2027-02-10", lv:{s:"2027-01-30", e:"2027-02-10", n:3}},
+  {nm:"228", s:"2027-02-27", e:"2027-03-01", lv:{s:"2027-02-26", e:"2027-03-01", n:1}},
+  {nm:"兒童節清明", s:"2027-04-03", e:"2027-04-06", lv:{s:"2027-04-03", e:"2027-04-11", n:3}},
+  {nm:"勞動節", s:"2027-04-30", e:"2027-05-02"},
+  {nm:"端午", s:"2027-06-09", e:"2027-06-09", lv:{s:"2027-06-09", e:"2027-06-13", n:2}},
+  {nm:"中秋", s:"2027-09-15", e:"2027-09-15", lv:{s:"2027-09-15", e:"2027-09-19", n:2}},
+  {nm:"教師節", s:"2027-09-28", e:"2027-09-28", lv:{s:"2027-09-25", e:"2027-09-28", n:1}},
+  {nm:"暑假第一週", s:"2027-07-01", e:"2027-07-06", school:4},
+  {nm:"暑假尾聲", s:"2027-08-19", e:"2027-08-24", school:4},
+  {nm:"國慶", s:"2027-10-09", e:"2027-10-11", lv:{s:"2027-10-08", e:"2027-10-11", n:1}},
+  {nm:"光復節", s:"2027-10-23", e:"2027-10-25", lv:{s:"2027-10-22", e:"2027-10-25", n:1}},
+  {nm:"行憲紀念日", s:"2027-12-24", e:"2027-12-26", lv:{s:"2027-12-24", e:"2028-01-02", n:4}},
+  {nm:"跨年", s:"2027-12-31", e:"2028-01-02"},
+];
+const DESTS = [
+  ["日本",[["TYO","東京","tyoa"],["OSA","大阪","osaa"],["FUK","福岡"],["OKA","沖繩"],["SPK","札幌","spka"],["NGO","名古屋"]]],
+  ["韓國",[["SEL","首爾","sela"],["PUS","釜山"]]],
+  ["港澳",[["HKG","香港"],["MFM","澳門"]]],
+  ["東南亞",[["BKK","曼谷","bkkt"],["CNX","清邁"],["DAD","峴港"],["SGN","胡志明市"],["SIN","新加坡","sins"],["KUL","吉隆坡","kula"],["DPS","峇里島"],["CEB","宿霧"]]],
+];
+const FH = {TYO:3.3,OSA:2.7,FUK:2.3,OKA:1.5,SPK:4,NGO:2.9,SEL:2.5,PUS:2.3,HKG:1.8,MFM:1.8,BKK:4,CNX:4,DAD:3,SGN:3.3,SIN:4.6,KUL:4.6,DPS:5.3,CEB:2.7};
+const fhText = c => { const h = FH[c]; if (!h) return c; const H = Math.floor(h), M = Math.round((h - H) * 6) * 10; return `飛${H}h${M ? M : ""}`; };
+const ORIGIN_NM = {TPE:"桃園",TSA:"松山",KHH:"高雄",RMQ:"台中"};
+const ORIGIN_CITY = {TPE:"tpe",TSA:"tpe",KHH:"khh",RMQ:"rmq"};
+const DI = {};
+DESTS.forEach(([,l]) => l.forEach(([c,n,sky]) => DI[c] = {c,n,sky}));
+
+/* ---------- state ---------- */
+const KEY = "fare-hub-v2";
+const today = new Date(); today.setHours(0,0,0,0);
+const D = s => { const [y,m,d] = s.split("-").map(Number); return new Date(y, m-1, d); };
+const iso = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+const add = (s,n) => { const d = D(s); d.setDate(d.getDate()+n); return iso(d); };
+const md = s => { const d = D(s); return `${d.getMonth()+1}/${d.getDate()}(${WD[d.getDay()]})`; };
+const yymmdd = s => s.slice(2).replace(/-/g,"");
+const span = (a,b) => Math.round((D(b)-D(a))/864e5) + 1;
+const fmt = n => n == null || isNaN(n) ? "—" : "NT$" + Math.round(n).toLocaleString("en-US");
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+let st = {origin:"TPE", adults:2, kids:1, kidAges:[6], infants:0, shortOnly:false, direct:true, noRedeye:true, manualForce:false, rooms:1, start:add(iso(today),30), end:add(iso(today),33), leave:false, hol:null,
+  flow:"multi", one:"TYO", linkDest:"TYO", tt:"rt", ojIn:"TYO", ojOut:"OSA", mode:"dests", fxOut:1, fxRet:1, picks:["TYO","OSA","SEL","BKK"], withHotel:true, holN:3, custom:[], history:[]};
+try { const s = JSON.parse(localStorage.getItem(KEY) || "null"); if (s) st = Object.assign(st, s); } catch(e) {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch(e) {} };
+(st.custom||[]).forEach(d => DI[d.c] = d);
+if (D(st.start) < today) { st.start = add(iso(today),30); st.end = add(st.start,3); }
+
+const upcoming = HOLIDAYS.filter(h => D(h.e) >= today).sort((a,b) => a.s < b.s ? -1 : 1);
+const holRange = h => st.leave && h.lv ? {s:h.lv.s, e:h.lv.e, leave:h.lv.n} : {s:h.s, e:h.e, leave:0};
+const nm = c => DI[c]?.n || ORIGIN_NM[c] || c;
+const paxFactor = () => st.adults + st.kids + st.infants * 0.1;
+const paxText = () => `${st.adults}大${st.kids?st.kids+"小":""}${st.infants?st.infants+"寶寶":""}・${st.rooms}房`;
+const childAges = () => [...st.kidAges.slice(0, st.kids).map(a => a ?? 6), ...Array(st.infants).fill(0)];
+
+/* The trip being compared. s/e fixed so a one-day holiday still has a return day. */
+function trip(s = st.start, e = st.end){
+  if (e <= s) e = add(s, 1);
+  if (D(s) < today) s = iso(today);
+  const single = st.flow === "single";
+  const main = single ? st.one : (st.picks.includes(st.linkDest) ? st.linkDest : st.picks[0] || "TYO");
+  const oj = single && st.tt === "oj";
+  const inC = oj ? st.ojIn : main, outC = oj ? st.ojOut : main;
+  return {o:st.origin, inC, outC, s, e, nights: span(s,e)-1, oj: inC !== outC};
+}
+
+/* ---------- URLs ---------- */
+const kidQ = sep => childAges().join(sep);
+const U = {
+  gRT:(o,d,s,e)=>`https://www.google.com/travel/flights?q=${encodeURIComponent(`${st.direct?"Nonstop flights":"Flights"} to ${d} from ${o} on ${s} through ${e}`)}&hl=zh-TW&curr=TWD`,
+  gOW:(o,d,s)=>`https://www.google.com/travel/flights?q=${encodeURIComponent(`${st.direct?"Nonstop one way flights":"One way flights"} to ${d} from ${o} on ${s}`)}&hl=zh-TW&curr=TWD`,
+  city:o => ORIGIN_CITY[o] || o.toLowerCase(),
+  tRT:(o,d,s,e)=>`https://tw.trip.com/flights/showfarefirst?dcity=${U.city(o)}&acity=${U.city(d)}&ddate=${s}&rdate=${e}&triptype=rt&class=y&quantity=1&locale=zh-TW&curr=TWD`,
+  tOW:(o,d,s)=>`https://tw.trip.com/flights/showfarefirst?dcity=${U.city(o)}&acity=${U.city(d)}&ddate=${s}&triptype=ow&class=y&quantity=1&locale=zh-TW&curr=TWD`,
+  skyC:c => (DI[c]&&DI[c].sky) || c.toLowerCase(),
+  skyQ:() => `adultsv2=${st.adults}${childAges().length?`&childrenv2=${encodeURIComponent(kidQ("|"))}`:""}&cabinclass=economy`,
+  sky:(o,d,s,e)=>`https://www.skyscanner.com.tw/transport/flights/${U.skyC(o)}/${U.skyC(d)}/${yymmdd(s)}/${e?yymmdd(e)+"/":""}?${U.skyQ()}&rtn=${e?1:0}`,
+  skyAny:(o,s,e)=>`https://www.skyscanner.com.tw/transport/flights-from/${o.toLowerCase()}/${yymmdd(s)}/${yymmdd(e)}/?${U.skyQ()}&rtn=1`,
+  kayakPax:() => `${st.adults>1?`/${st.adults}adults`:""}${childAges().length?`/children-${childAges().map(a=>a<2?"1L":a).join("-")}`:""}`,
+  kayak:(t)=> t.oj
+    ? `https://www.kayak.com/flights/${t.o}-${t.inC}/${t.s}/${t.outC}-${t.o}/${t.e}${U.kayakPax()}?sort=price_a&currency=TWD`
+    : `https://www.kayak.com/flights/${t.o}-${t.inC}/${t.s}/${t.e}${U.kayakPax()}?sort=price_a&currency=TWD`,
+  ez:(o,d)=>`https://flight.eztravel.com.tw/tickets-${U.city(o)}-${d.toLowerCase()}`,
+  booking:(n,s,e)=>`https://www.booking.com/searchresults.zh-tw.html?ss=${encodeURIComponent(n)}&checkin=${s}&checkout=${e}&group_adults=${st.adults}&no_rooms=${st.rooms}&group_children=${childAges().length}${childAges().map(a=>`&age=${a}`).join("")}&selected_currency=TWD&order=price`,
+  ghotels:(n,s,e)=>{ const f = x => { const d = D(x); return `${d.getMonth()+1}月${d.getDate()}日`; };
+    return `https://www.google.com/travel/search?q=${encodeURIComponent(`${n} 飯店 ${f(s)}入住 ${f(e)}退房 ${st.adults}位成人${childAges().length?` ${childAges().length}位兒童`:""}`)}&hl=zh-TW&curr=TWD`; },
+};
+
+/* ---------- render: form ---------- */
+function renderSteps(){
+  document.querySelectorAll(".step").forEach(el => {
+    const k = el.dataset.k, v = st[k];
+    el.querySelector("output").textContent = v;
+    el.children[0].disabled = v <= +el.dataset.min; el.children[2].disabled = v >= +el.dataset.max;
+  });
+  const box = $("ages"); box.hidden = !st.kids;
+  box.querySelectorAll("select").forEach(x => x.remove());
+  for (let i = 0; i < st.kids; i++) {
+    const s = document.createElement("select"); s.id = "age"+i; s.setAttribute("aria-label", `第 ${i+1} 位小孩年齡`);
+    for (let a = 2; a <= 11; a++) s.add(new Option(`${a} 歲`, a));
+    s.value = st.kidAges[i] ?? 6;
+    s.onchange = () => { st.kidAges[i] = +s.value; update(); };
+    box.appendChild(s);
+  }
+}
+function renderHols(){
+  const box = $("hchips"); box.innerHTML = "";
+  upcoming.forEach((h,i) => {
+    const r = holRange(h), n = span(r.s, r.e);
+    const b = document.createElement("button");
+    b.className = "hchip" + (h.school ? " school" : n >= 5 ? " long" : "");
+    b.setAttribute("aria-pressed", String(st.hol === i && st.start === r.s && st.end === (r.s===r.e?add(r.e,1):r.e)));
+    b.innerHTML = `<span></span><span class="d">${md(r.s)}–${md(r.e)}</span><span class="n">${n}天${h.school?`・大人請${h.school}`:r.leave?`・請${r.leave}`:""}</span>`;
+    b.firstChild.textContent = h.nm;
+    b.onclick = () => { st.hol = i; st.start = D(r.s) < today ? iso(today) : r.s; st.end = r.s === r.e ? add(r.e,1) : r.e; update(); };
+    box.appendChild(b);
+  });
+}
+function chipRow(list, isOn, onClick){
+  const box = document.createElement("div"); box.className = "dgrid";
+  const groups = DESTS.map(g => [g[0], g[1].map(x => DI[x[0]])]);
+  if (st.custom.length) groups.push(["自訂", st.custom]);
+  groups.forEach(([g, l]) => {
+    const row = document.createElement("div"); row.className = "dg";
+    row.innerHTML = `<span class="eyebrow">${g}</span>`;
+    l.forEach(d => {
+      const b = document.createElement("button"); b.className = "chip";
+      b.setAttribute("aria-pressed", String(isOn(d.c)));
+      b.innerHTML = `<span></span><code>${fhText(d.c)}</code>`; b.firstChild.textContent = d.n;
+      b.hidden = st.shortOnly && !(FH[d.c] <= 4) && !isOn(d.c);
+      b.onclick = () => onClick(d.c); row.appendChild(b);
+    });
+    box.appendChild(row);
+  });
+  return box;
+}
+const FLOW_MODES = {multi:["dests","hols"], single:["site","dates","hols"]};
+function renderWhere(){
+  const multi = st.flow === "multi";
+  $("fl-multi").setAttribute("aria-pressed", String(multi)); $("fl-single").setAttribute("aria-pressed", String(!multi));
+  $("pane-multi").hidden = !multi; $("pane-single").hidden = multi;
+  const wm = $("where-multi"); wm.innerHTML = "";
+  [...chipRow(null, c => st.picks.includes(c), c => {
+    if (st.picks.includes(c)) st.picks = st.picks.filter(x => x !== c);
+    else if (st.picks.length < 8) st.picks = [...st.picks, c];
+    update();
+  }).children].forEach(x => wm.appendChild(x));
+  $("picked").innerHTML = st.picks.length
+    ? `已選 <b>${st.picks.length}</b>/8：${esc(st.picks.map(nm).join("、"))} <button class="btn ghost" id="clr" style="padding:2px 8px;font-size:.78rem">清除</button>`
+    : `<span class="hint">還沒選地點</span>`;
+  if ($("clr")) $("clr").onclick = () => { st.picks = []; update(); };
+  $("tt-rt").setAttribute("aria-pressed", String(st.tt==="rt")); $("tt-oj").setAttribute("aria-pressed", String(st.tt==="oj"));
+  $("where-one").hidden = st.tt !== "rt"; $("where-oj").hidden = st.tt !== "oj";
+  const wo = $("where-one"); wo.innerHTML = "";
+  [...chipRow(null, c => c === st.one, c => { st.one = c; update(); }).children].forEach(x => wo.appendChild(x));
+  ["oj-in","oj-out"].forEach(id => {
+    const sel = $(id); sel.innerHTML = "";
+    const groups = DESTS.map(g => [g[0], g[1].map(x => DI[x[0]])]); if (st.custom.length) groups.push(["自訂", st.custom]);
+    groups.forEach(([g,l]) => { const og = document.createElement("optgroup"); og.label = g; l.forEach(d => og.appendChild(new Option(`${d.n} ${d.c}`, d.c))); sel.appendChild(og); });
+    sel.value = id === "oj-in" ? st.ojIn : st.ojOut;
+  });
+  const ld = $("link-dest"); $("ld-box").hidden = !multi || st.picks.length < 2;
+  ld.innerHTML = ""; st.picks.forEach(c => ld.add(new Option(nm(c), c))); ld.value = st.picks.includes(st.linkDest) ? st.linkDest : st.picks[0] || "";
+}
+function famRule(){
+  const r = [];
+  if (st.direct) r.push("只算直飛（直達、nonstop）航班，轉機的不要算");
+  if (st.noRedeye) r.push("排除去程或回程在 00:00–05:59 起飛、或在 00:00–05:59 抵達（含 +1 隔天凌晨）的紅眼班");
+  return r.length ? `條件：${r.join("；")}。若沒有符合條件的航班，lowest 為 null 並在 note 說明。` : "";
+}
+const holList = () => upcoming.slice(0, st.holN);
+
+/* query planning: how many page loads each mode needs */
+function plan(mode){
+  const t = trip();
+  if (mode === "site") return t.oj ? 5 : 3;
+  if (mode === "dates") { const {outs, rets, combos} = dateCombos(t); return t.oj ? outs.length + rets.length : combos.length; }
+  if (mode === "hols") return holList().length * (t.oj ? 2 : places(t).length);
+  if (mode === "dests") return st.picks.length * (st.withHotel ? 2 : 1);
+}
+const mins = n => Math.max(1, Math.round(n * 20 / 60));
+function renderConsole(){
+  const t = trip(), multi = st.flow === "multi";
+  if (!FLOW_MODES[st.flow].includes(st.mode)) st.mode = FLOW_MODES[st.flow][0];
+  const names = st.picks.map(nm);
+  if (multi) {
+    $("sum-rt").innerHTML = `${t.o}<i>⇄</i>${names.length ? esc(names.slice(0,4).join("・")) + (names.length > 4 ? "…" : "") : "（尚未選地點）"}`;
+  } else {
+    $("sum-rt").innerHTML = t.oj ? `${t.o}<i>→</i>${t.inC}<i>⋯</i>${t.outC}<i>→</i>${t.o}` : `${t.o}<i>⇄</i>${t.inC}`;
+  }
+  $("sum-meta").textContent = `${md(t.s)} – ${md(t.e)}・${t.nights+1}天${t.nights}夜・${paxText()}`;
+  document.querySelectorAll(".mode").forEach(b => {
+    const f = b.dataset.flow; b.hidden = !(f === "both" || f === st.flow);
+    b.setAttribute("aria-pressed", String(b.dataset.m === st.mode));
+  });
+  const man = isManual();
+  ["site","dates","hols","dests"].forEach(m => { const n = plan(m); $("c-"+m).textContent = man ? `要看 ${n} 個網頁` : `${n} 次查詢・約 ${mins(n)} 分鐘`; });
+  $("o-manual").checked = man; $("o-manual").disabled = !mcp; $("man-note").hidden = !man;
+  $("man-box").title = mcp ? "自己開網站填價格" : "不在 Claude 桌面版時只能用手動模式";
+  $("opt-dates").hidden = st.mode !== "dates"; $("opt-dests").hidden = st.mode !== "dests"; $("opt-hols").hidden = st.mode !== "hols";
+  $("o-direct").checked = st.direct; $("o-redeye").checked = st.noRedeye;
+  $("fh-all").setAttribute("aria-pressed", String(!st.shortOnly)); $("fh-short").setAttribute("aria-pressed", String(st.shortOnly));
+  $("fx-out").value = st.fxOut; $("fx-ret").value = st.fxRet; $("w-hotel").checked = st.withHotel; $("hol-n").value = String(st.holN);
+  const one = t.oj ? `${nm(t.inC)}進／${nm(t.outC)}出` : nm(t.inC);
+  $("q-dests").textContent = "同一段日期，這幾個地點的機＋酒誰最便宜";
+  $("q-site").textContent = `${one}：Google、Trip.com、Booking 誰最便宜`;
+  $("q-dates").textContent = `${one}：去程回程各提前或延後幾天`;
+  $("q-hols").textContent = multi ? "這幾個地點 × 各連假，哪個組合最便宜" : `${one}：哪個連假最便宜`;
+  const n = plan(st.mode);
+  $("go").textContent = {site:"比網站", dates:"比日期組合", hols:"比連假", dests:"比地點"}[st.mode] + (man ? `（手動・${n} 個網頁）` : `（${n} 次查詢・約 ${mins(n)} 分鐘）`);
+  const need = multi && st.picks.length < 2;
+  $("go").disabled = busy || n === 0 || need;
+  $("go-hint").textContent = need ? "請在 03 至少選 2 個地點" : "";
+}
+/* 各網站直接查：每列可抓一份結果摘要（最低價＋前兩名） */
+const snaps = {};   // url → {state:'load'|'ok'|'err', lowest, currency, unit, top, note, at}
+function siteList(){
+  const t = trip(), n = nm(t.inC);
+  const F = (name, note, url, re) => ({name, note, url, kind:"flight", re});
+  const H = (name, note, url, re, unit) => ({name, note, url, kind:"hotel", re, unit});
+  const L = (name, note, url, why) => ({name, note, url, why});
+  const flights = t.oj ? [
+    F("Google 航班・去程","單程・每人",U.gOW(t.o,t.inC,t.s),/\$[\d,]{4,}/g),
+    F("Google 航班・回程","單程・每人",U.gOW(t.outC,t.o,t.e),/\$[\d,]{4,}/g),
+    F("Trip.com・去程","單程・每人",U.tOW(t.o,t.inC,t.s),/TWD[\d,]{4,}/g),
+    F("Trip.com・回程","單程・每人",U.tOW(t.outC,t.o,t.e),/TWD[\d,]{4,}/g),
+    F("KAYAK","多城市・每人",U.kayak(t),/\$[\d,]{3,}/g),
+    L("Skyscanner・去程","需手動開",U.sky(t.o,t.inC,t.s),"會跳人機驗證"),
+    L("Skyscanner・回程","需手動開",U.sky(t.outC,t.o,t.e),"會跳人機驗證"),
+  ] : [
+    F("Google 航班","來回・每人",U.gRT(t.o,t.inC,t.s,t.e),/\$[\d,]{4,}/g),
+    F("Trip.com","來回・每人",U.tRT(t.o,t.inC,t.s,t.e),/TWD[\d,]{4,}/g),
+    F("KAYAK","來回・每人",U.kayak(t),/\$[\d,]{3,}/g),
+    F("易遊網","近期最低單程",U.ez(t.o,t.inC),/TWD\s?[\d,]{4,}/g),
+    L("Skyscanner","需手動開",U.sky(t.o,t.inC,t.s,t.e),"會跳人機驗證"),
+  ];
+  const hotels = [
+    H("Booking.com",`${t.nights} 晚總價`,U.booking(n,t.s,t.e),/(TWD|NT\$)\s?[\d,]{4,}/g,"total"),
+    H("Google 飯店","每晚・多家比價",U.ghotels(n,t.s,t.e),/\$[\d,]{3,}/g,"night"),
+    L("Agoda","首頁自行輸入","https://www.agoda.com/zh-tw/","網址無法帶入條件"),
+    L("易遊網訂房","首頁自行輸入","https://hotel.eztravel.com.tw/","網址無法帶入條件"),
+  ];
+  const pk = [
+    L("易遊網 機＋酒","自由行套裝","https://packages.eztravel.com.tw/","網址無法帶入條件"),
+    L("Trip.com 機＋酒","同訂常有折扣","https://tw.trip.com/packages/","網址無法帶入條件"),
+    L("Skyscanner 到處去","這段日期哪裡便宜",U.skyAny(t.o,t.s,t.e),"會跳人機驗證"),
+    L("Google 探索","地圖看票價","https://www.google.com/travel/explore?hl=zh-TW&curr=TWD","地圖頁不適合摘要"),
+  ];
+  return [["機票", flights], [`住宿・${n}・${t.nights} 晚`, hotels], ["機＋酒・不限目的地", pk]];
+}
+const money = (v, cur) => v == null ? "—" : (cur && cur !== "TWD" ? (cur === "USD" ? "US$" : cur + " ") : "NT$") + Math.round(v).toLocaleString("en-US");
+function snapHTML(x){
+  if (!x.kind) return `<div class="snap"><span class="na">無法自動摘要（${esc(x.why)}），請點上方連結</span></div>`;
+  const r = snaps[x.url];
+  if (!r) return `<div class="snap"><button class="sbtn" data-url="${esc(x.url)}" ${busy?"disabled":""}>${isManual() ? "填價格" : "看結果"}</button></div>`;
+  if (r.state === "load") return `<div class="snap"><div class="card load"><span class="spin"></span>${esc(r.msg || "讀取中…")}</div></div>`;
+  if (r.state === "err") return `<div class="snap"><div class="card err">${esc(r.msg)}</div><button class="sbtn" data-url="${esc(x.url)}" ${busy?"disabled":""}>重試</button></div>`;
+  const unit = x.kind === "hotel" ? (x.unit === "night" ? "每晚最低" : `${trip().nights} 晚總價最低`) : "每人最低";
+  const tops = (r.top || []).slice(0, 2).map(y => `${esc(y.name)} ${money(y.price, r.currency)}${y.detail ? "・" + esc(y.detail) : ""}`).join("<br>");
+  return `<div class="snap"><div class="card"><span class="pr ${r.isBest ? "best" : ""}">${money(r.lowest, r.currency)}</span><span class="u">${unit}${r.isBest ? "・這一區最便宜" : ""}</span>${tops ? `<span class="tops">${tops}</span>` : ""}<span class="tm">${esc(r.at)} 擷取</span></div><button class="sbtn" data-url="${esc(x.url)}" ${busy?"disabled":""}>更新</button></div>`;
+}
+function markBest(){
+  siteList().forEach(([, list]) => {
+    const groups = {};
+    list.forEach(x => { const r = snaps[x.url]; if (r && r.state === "ok" && r.lowest && (!r.currency || r.currency === "TWD")) { const g = x.kind + (x.unit || "") + (x.note.includes("單程") ? "ow" : ""); (groups[g] = groups[g] || []).push(r); } });
+    Object.values(groups).forEach(rs => { const m = Math.min(...rs.map(r => r.lowest)); rs.forEach(r => r.isBest = rs.length > 1 && r.lowest === m); });
+  });
+}
+function renderLinks(){
+  markBest();
+  $("links").innerHTML = siteList().map(([title, list]) => `<div class="lgroup"><h3>${esc(title)}</h3>` +
+    list.map(x => `<div class="lrow"><a class="lk" href="${x.url}" target="_blank" rel="noopener"><b>${esc(x.name)}</b><span>${esc(x.note)}</span></a>${snapHTML(x)}</div>`).join("") + `</div>`).join("");
+  $("links").querySelectorAll(".sbtn").forEach(b => b.onclick = () => snapOne(b.dataset.url).catch(() => {}));
+  const n = siteList().flatMap(g => g[1]).filter(x => x.kind).length;
+  $("snap-all").textContent = isManual() ? `逐一填入各網站最低價（${n} 個網站）` : `抓取各網站的結果摘要（${n} 個網站・約 ${mins(n)} 分鐘）`;
+  $("snap-all").disabled = busy;
+  $("snap-hint").textContent = isManual() ? "會一頁頁帶你打開網站、填回最低價，填完自動標出哪裡最便宜；也可以只點單一網站下方的「填價格」" : "也可以只點單一網站下方的「看結果」";
+}
+async function snapOne(url, single = true){
+  const x = siteList().flatMap(g => g[1]).find(y => y.url === url); if (!x || !x.kind) return;
+  if (single) { if (busy) return; busy = true; stopFlag = false; renderConsole(); }
+  snaps[url] = {state:"load", msg:`讀取 ${x.name}…`}; renderLinks();
+  try {
+    const {text, blocked} = await readPage(url, x.re, `${x.name}：${x.note}`, x.kind);
+    if (blocked) snaps[url] = {state:"err", msg:"網站要求人機驗證，請點連結自己開"};
+    else {
+      snaps[url] = {state:"load", msg:"Claude 整理中…"}; renderLinks();
+      const t = trip();
+      const r = await snapExtract(x, `${t.o}→${nm(t.inC)} ${t.s}~${t.e} ${paxText()}`, text);
+      const now = new Date();
+      snaps[url] = r.lowest ? Object.assign({state:"ok", at: now.toLocaleTimeString("zh-TW",{hour:"2-digit",minute:"2-digit"})}, r)
+                            : {state:"err", msg: r.note ? `沒讀到價格：${String(r.note).slice(0,40)}` : "沒讀到價格，請點連結查看"};
+    }
+  } catch(e) {
+    snaps[url] = {state:"err", msg: errText(e)};
+    if (e && FATAL.includes(e.code)) { if (single) { busy = false; renderConsole(); } renderLinks(); throw e; }
+  }
+  if (single) { busy = false; renderConsole(); }
+  renderLinks();
+}
+async function snapExtract(x, label, text){
+  if (String(text).startsWith(MANUAL)) return {lowest: +text.slice(MANUAL.length) || null, currency:"TWD", top: []};
+  const body = text.slice(0, 9000);
+  const fallback = () => { const m = [...body.matchAll(/(TWD|NT\$|US\$|\$)\s?([\d,]{3,7})/g)].map(v => +v[2].replace(/,/g,"")).filter(v => v >= 100); return {lowest: m.length ? Math.min(...m) : null, currency: /US\$|per person/i.test(body) ? "USD" : "TWD", top: []}; };
+  if (!sample) return fallback();
+  const what = x.kind === "hotel"
+    ? (x.unit === "night" ? "每晚房價最低的 3 間住宿" : "整段住宿總價最低的 3 間住宿")
+    : famRule() + (x.note.includes("近期") ? "近期最便宜的 3 個航班（含日期）" : "所查日期最便宜的 3 個航班（每位成人價）");
+  try {
+    const j = await sample.json(`這是 ${x.name} 搜尋結果頁的文字（${label}）。找出${what}。只回 JSON：{"lowest":number|null,"currency":"TWD"|"USD"|其他三碼,"top":[{"price":number,"name":string,"detail":string}],"note":string}。
+- 價格照頁面顯示的數字與幣別；頁面只寫 $ 時：若同頁有 TWD/NT$ 或價格多為四到五位數，視為 TWD，若寫 per person 且多為三位數，視為 USD。
+- 航班 name 寫航空公司，detail 寫日期或起飛時間＋直飛/轉機，15 字內；住宿 name 寫飯店名，detail 寫星級或評分，10 字內。
+- 略過廣告。若是人機驗證或沒有價格，lowest 為 null 並在 note 說明。
+
+---頁面文字---
+${body}`, {modelTier:"quick", cache:{gcTime:600000}});
+    return j && typeof j === "object" ? j : fallback();
+  } catch(e) { if (e && e.code === "not_granted") sample = null; return fallback(); }
+}
+$("snap-all").onclick = async () => {
+  if (busy) return; busy = true; stopFlag = false; renderConsole(); $("snap-stop").hidden = false;
+  try {
+    for (const x of siteList().flatMap(g => g[1]).filter(y => y.kind)) { if (stopFlag) break; await snapOne(x.url, false); }
+    $("snap-hint").textContent = stopFlag ? "已停止，已抓到的結果保留在下方" : "完成。橘色價格是同一區最便宜的；點網站名稱可開完整結果";
+  } catch(e) { $("snap-hint").textContent = errText(e); }
+  finally { busy = false; $("snap-stop").hidden = true; renderConsole(); renderLinks(); }
+};
+$("snap-stop").onclick = () => { stopFlag = true; };
+function renderHist(){
+  const h = st.history || []; $("hist-box").hidden = !h.length;
+  $("hist").innerHTML = h.slice(0,30).map(x => `<div><span>${esc(x.when)}　${esc(x.label)}</span><b>${fmt(x.price)}</b></div>`).join("");
+}
+function update(){
+  $("origin").value = st.origin; $("d-start").value = st.start; $("d-end").value = st.end;
+  $("d-start").min = iso(today); $("d-end").min = add(st.start, 1);
+  const t = trip(); $("nights").textContent = `${t.nights+1} 天 ${t.nights} 夜`;
+  $("lv-off").setAttribute("aria-pressed", String(!st.leave)); $("lv-on").setAttribute("aria-pressed", String(st.leave));
+  renderSteps(); renderHols(); renderWhere(); renderConsole(); renderLinks(); renderHist(); save();
+}
+
+/* ---------- controls ---------- */
+document.querySelectorAll(".step").forEach(el => {
+  const k = el.dataset.k;
+  el.children[0].onclick = () => { st[k] = Math.max(+el.dataset.min, st[k]-1); update(); };
+  el.children[2].onclick = () => { st[k] = Math.min(+el.dataset.max, st[k]+1); update(); };
+});
+$("origin").onchange = e => { st.origin = e.target.value; update(); };
+$("d-start").onchange = e => { if (!e.target.value) return; const n = span(st.start, st.end); st.start = e.target.value; if (st.end <= st.start) st.end = add(st.start, Math.max(1, n-1)); st.hol = null; update(); };
+$("d-end").onchange = e => { if (!e.target.value) return; st.end = e.target.value <= st.start ? add(st.start,1) : e.target.value; st.hol = null; update(); };
+$("lv-off").onclick = () => { st.leave = false; update(); };
+$("lv-on").onclick = () => { st.leave = true; update(); };
+$("tt-rt").onclick = () => { st.tt = "rt"; update(); };
+$("o-manual").onchange = e => { st.manualForce = e.target.checked; update(); };
+$("fh-all").onclick = () => { st.shortOnly = false; update(); };
+$("fh-short").onclick = () => { st.shortOnly = true; update(); };
+$("o-direct").onchange = e => { st.direct = e.target.checked; update(); };
+$("o-redeye").onchange = e => { st.noRedeye = e.target.checked; update(); };
+$("fl-multi").onclick = () => { st.flow = "multi"; update(); };
+$("fl-single").onclick = () => { st.flow = "single"; update(); };
+$("link-dest").onchange = e => { st.linkDest = e.target.value; update(); };
+$("tt-oj").onclick = () => { st.tt = "oj"; if (st.ojIn === st.ojOut) st.ojOut = st.ojIn === "OSA" ? "TYO" : "OSA"; update(); };
+$("oj-in").onchange = e => { st.ojIn = e.target.value; update(); };
+$("oj-out").onchange = e => { st.ojOut = e.target.value; update(); };
+$("fx-out").onchange = e => { st.fxOut = +e.target.value; update(); };
+$("fx-ret").onchange = e => { st.fxRet = +e.target.value; update(); };
+$("w-hotel").onchange = e => { st.withHotel = e.target.checked; update(); };
+$("hol-n").onchange = e => { st.holN = +e.target.value; update(); };
+document.querySelectorAll(".mode").forEach(b => b.onclick = () => { st.mode = b.dataset.m; update(); });
+$("c-add").onclick = () => {
+  const c = $("c-code").value.trim().toUpperCase(), n = $("c-name").value.trim();
+  if (!/^[A-Z]{3}$/.test(c)) { $("c-code").focus(); return; }
+  const d = {c, n: n || c}; st.custom = [...st.custom.filter(x => x.c !== c), d]; DI[c] = d;
+  if (st.flow === "multi") { if (!st.picks.includes(c)) st.picks = [...st.picks, c].slice(-8); }
+  else if (st.tt === "rt") st.one = c; else st.ojIn = c;
+  $("c-code").value = ""; $("c-name").value = ""; update();
+};
+
+/* ---------- auto compare: Claude 桌面版內建瀏覽器讀頁面，Claude 整理價格 ---------- */
+let mcp = null, sample = null, tabId = null, stopFlag = false, busy = false;
+if (window.claude && window.claude.use) {
+  window.claude.use("mcp").then(m => { mcp = m; if (m) update(); }).catch(()=>{});
+  window.claude.use("sample").then(s => sample = s).catch(()=>{});
+}
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+const B = "host:claude_browser";
+const res = $("results");
+const FATAL = ["server_not_connected","not_granted","capability_disabled","approval_required","cancelled","not_in_manifest"];
+
+function errText(e){
+  const c = e && e.code;
+  if (["server_not_connected","not_granted","capability_disabled"].includes(c)) return "自動比價要在 Claude 桌面版裡開啟這個頁面（會用到桌面版的內建瀏覽器）。下方「各網站直接查」的連結隨時可用。";
+  if (["cancelled","approval_required","not_in_manifest"].includes(c)) return "內建瀏覽器的使用沒有被允許。再按一次開始比價，並在 Claude 的提示中選「允許」。";
+  if (c === "tool_error") return "瀏覽器打不開這個網站。若 Claude 提示網站尚未允許，請允許後再試。";
+  return "瀏覽器暫時沒有回應，確認 Claude 桌面版開著後再試一次。";
+}
+const textOf = r => { const p = r && (r.payload ?? r.content?.[0]?.text); return typeof p === "string" ? p : JSON.stringify(p || ""); };
+
+const MANUAL = "__MANUAL__:";
+const isManual = () => st.manualForce || !mcp;
+let wzCount = 0;
+async function readPage(url, readyRe, desc = "", kind = "flight"){
+  if (isManual()) return manualStep(url, desc, kind);
+  if (!mcp) throw {code:"server_not_connected"};
+  if (!tabId) { const r = await mcp.callTool(B, "preview_start", {url}); const m = textOf(r).match(/tabId\s+([^\s)]+)/); tabId = m ? m[1] : null; }
+  else await mcp.callTool(B, "navigate", {url, tabId});
+  let text = "";
+  for (let i = 0; i < 5 && !stopFlag; i++) {
+    await sleep(i === 0 ? 7000 : 4500);
+    text = textOf(await mcp.callTool(B, "get_page_text", tabId ? {tabId, max_chars:14000} : {max_chars:14000}, {cache:false}));
+    if (/機器人|captcha|robot/i.test(text)) return {text, blocked:true};
+    if ((text.match(readyRe) || []).length >= 3) break;
+  }
+  return {text, blocked:false};
+}
+/* 手動模式：一步步帶使用者打開網頁、填回價格 */
+function priceCandidates(text){
+  const v = [...String(text).matchAll(/(?:TWD|NT\$|US\$|\$|NT)\s?([\d,]{3,7})/g)].map(m => +m[1].replace(/,/g,"")).filter(x => x >= 300);
+  return [...new Set(v)].sort((a,b) => a - b).slice(0, 8);
+}
+function manualStep(url, desc, kind){
+  const wz = $("wizard"); wzCount++;
+  const host = (url.match(/https?:\/\/([^/]+)/) || [,""])[1].replace(/^www\./,"");
+  const tip = kind === "hotel"
+    ? (url.includes("google.com/travel/search") ? "填「每晚」最低的房價。" : "填住宿「整段總價」最低的那間（Booking 列表右下角的價格）。記得看房型能不能住下全家。")
+    : `填「每位大人」最便宜的票價${url.includes("google.com") ? "（Google 航班顯示的就是每人價）" : ""}。${st.direct ? "只看直飛。" : ""}${st.noRedeye ? "避開凌晨起飛或半夜抵達的班機。" : ""}`;
+  wz.hidden = false;
+  wz.innerHTML = `
+    <div class="wz-top"><span class="wz-step">手動比價・第 ${wzCount} 頁</span><span class="hint">${esc(host)}</span></div>
+    <h3>${esc(desc || "查這個網頁的最低價")}</h3>
+    <div class="wz-row"><a class="btn" id="wz-open" href="${url}" target="_blank" rel="noopener">① 打開網頁 ↗</a><span class="tip">網頁會開在新分頁，看完再回到這裡。</span></div>
+    <div class="wz-row"><span class="eyebrow">② 最便宜的價格</span>
+      <label class="wz-num"><span>NT$</span><input id="wz-price" type="text" inputmode="numeric" placeholder="例如 16238" aria-label="最便宜的價格"></label></div>
+    <p class="tip">${esc(tip)}</p>
+    <details id="wz-paste-box"><summary class="hint" style="cursor:pointer">懶得找？整頁全選複製（Ctrl/⌘＋A、Ctrl/⌘＋C）貼在這裡，自動幫你找價格</summary>
+      <textarea id="wz-paste" placeholder="把整個網頁的文字貼上來"></textarea>
+      <div class="cands" id="wz-cands"></div>
+    </details>
+    <div class="wz-row"><button class="btn" id="wz-ok">③ 確認，下一頁</button><button class="btn ghost" id="wz-skip">這頁略過</button></div>`;
+  wz.scrollIntoView({behavior:"smooth", block:"center"});
+  return new Promise(resolve => {
+    const done = v => { stopWatch(); wz.hidden = true; wz.innerHTML = ""; resolve(v); };
+    const inp = $("wz-price");
+    $("wz-paste").addEventListener("input", e => {
+      const c = priceCandidates(e.target.value);
+      $("wz-cands").innerHTML = c.length ? `<span class="hint">找到這些價格，點一下填入（通常最低的就是）：</span>` + c.map(v => `<button type="button" data-v="${v}">NT$${v.toLocaleString("en-US")}</button>`).join("") : `<span class="hint">沒找到價格，請直接在上面輸入。</span>`;
+      if (c.length && !inp.value) inp.value = c[0];
+      $("wz-cands").querySelectorAll("button").forEach(b => b.onclick = () => { inp.value = b.dataset.v; inp.focus(); });
+    });
+    const ok = () => { const v = +String(inp.value).replace(/[^\d]/g, ""); if (!v) { inp.focus(); return; } done({text: MANUAL + v, blocked:false}); };
+    $("wz-ok").onclick = ok;
+    inp.addEventListener("keydown", e => { if (e.key === "Enter") ok(); });
+    $("wz-skip").onclick = () => done({text:"", blocked:false});
+    const t = setInterval(() => { if (stopFlag) done({text:"", blocked:false}); }, 300);
+    const stopWatch = () => clearInterval(t);
+  });
+}
+const RE = {g:/\$[\d,]{4,}/g, t:/TWD[\d,]{4,}/g, b:/(TWD|NT\$)\s?[\d,]{4,}/g};
+function regexLowest(text){
+  const n = [...text.matchAll(/(?:TWD|NT\$|\$)\s?([\d,]{4,7})/g)].map(m => +m[1].replace(/,/g,"")).filter(x => x >= 800);
+  return n.length ? Math.min(...n) : null;
+}
+async function extract(kind, label, text){
+  if (String(text).startsWith(MANUAL)) return {lowest: +text.slice(MANUAL.length) || null, top: []};
+  if (!text) return {lowest: null, top: [], note: "略過"};
+  const body = text.slice(0, 9000);
+  if (!sample) return {lowest: regexLowest(body), top: []};
+  const spec = kind === "hotel"
+    ? `這是訂房網搜尋結果頁的文字（${label}）。找出整段住宿總價最低的 3 間（新台幣）。只回 JSON：{"lowest":number|null,"top":[{"price":number,"name":string,"detail":string}],"note":string}。detail 寫評分或區域，10 字內。`
+    : `這是機票搜尋結果頁的文字（${label}）。${famRule()}找出「所查日期」最便宜的 3 個航班（每位成人、新台幣；頁面若顯示其他日期的價格不要算進 lowest）。只回 JSON：{"lowest":number|null,"top":[{"price":number,"name":string,"detail":string}],"dates":[{"range":string,"price":number}],"note":string}。name 寫航空公司，detail 寫起飛時間與直飛或轉機，15 字內。dates：頁面若有「日期區間＋價格」列表（如 12 月 18 日–12 月 20 日 TWD8,133）全部列出，否則空陣列。`;
+  try {
+    const j = await sample.json(`${spec}\n若頁面是機器人驗證或沒有價格，lowest 為 null 並在 note 說明。\n\n---頁面文字---\n${body}`, {modelTier:"quick", cache:{gcTime:600000}});
+    return j && typeof j === "object" ? j : {lowest: regexLowest(body), top: []};
+  } catch(e) {
+    if (e && e.code === "not_granted") sample = null;
+    return {lowest: regexLowest(body), top: []};
+  }
+}
+/* one leg or one round trip on one site → {pp, top, dates, url} */
+async function fare(site, o, d, s, e){
+  const url = site === "g" ? (e ? U.gRT(o,d,s,e) : U.gOW(o,d,s)) : (e ? U.tRT(o,d,s,e) : U.tOW(o,d,s));
+  const {text, blocked} = await readPage(url, RE[site], `${site === "g" ? "Google 航班" : "Trip.com"}：${e ? "來回" : "單程"} ${nm(o)} → ${nm(d)}，${md(s)}${e ? " 去・" + md(e) + " 回" : ""}`, "flight");
+  if (blocked) return {url, blocked:true};
+  const r = await extract("flight", `${e?"來回":"單程"} ${o}→${d} ${s}${e?"~"+e:""}`, text);
+  return {url, pp: r.lowest || null, top: r.top || [], dates: r.dates || []};
+}
+async function tripFare(site, t){
+  if (!t.oj) return fare(site, t.o, t.inC, t.s, t.e);
+  const a = await fare(site, t.o, t.inC, t.s); if (stopFlag) return a;
+  const b = await fare(site, t.outC, t.o, t.e);
+  return {url:a.url, url2:b.url, pp: a.pp && b.pp ? a.pp + b.pp : null, legs:[a,b], blocked: a.blocked || b.blocked};
+}
+
+function startRun(){ busy = true; stopFlag = false; $("stop").hidden = false; res.hidden = false; renderConsole(); renderLinks(); }
+function endRun(){ busy = false; $("stop").hidden = true; renderConsole(); renderLinks(); }
+$("stop").onclick = () => { stopFlag = true; };
+function setStatus(txt, on){ const s = $("status"); if (s) s.innerHTML = (on ? '<span class="spin"></span>' : "") + `<span>${txt}</span>`; }
+function remember(label, price){ if (!price) return; const n = new Date(); st.history = [{when:`${n.getMonth()+1}/${n.getDate()}`, label, price}, ...(st.history||[])].slice(0,40); save(); renderHist(); }
+const doneText = () => stopFlag ? "已停止" : `完成・${new Date().toLocaleTimeString("zh-TW",{hour:"2-digit",minute:"2-digit"})} 的價格`;
+
+/* ranked list: items {label, sub, price(group total), pp, url, state} */
+function rankHTML(items, opts = {}){
+  const ok = items.filter(x => x.price);
+  const min = ok.length ? Math.min(...ok.map(x => x.price)) : null;
+  const sorted = opts.keepOrder ? items : [...items].sort((a,b) => (a.price || 9e15) - (b.price || 9e15));
+  return `<div class="rank">` + sorted.map((x,i) => {
+    const best = x.price && x.price === min && ok.length > 1;
+    const cls = best ? "best" : x.price ? "" : x.state === "failed" ? "fail" : "wait";
+    const amt = x.price ? `<b>${fmt(x.price)}</b>${x.pp ? `<small>每人 ${fmt(x.pp)}</small>` : ""}` : `<b>${esc(x.stateText || "等待中")}</b>`;
+    return `<div class="ri ${cls}"><span class="no">${x.price ? i+1 : "·"}</span>
+      <div class="what"><b>${esc(x.label)}${best ? '<span class="badge">最便宜</span>' : ""}</b><small>${x.sub || ""}</small></div>
+      <div class="amt">${amt}</div>${x.url ? `<a class="open" href="${x.url}" target="_blank" rel="noopener">打開 ↗</a>` : "<span></span>"}</div>`;
+  }).join("") + `</div>`;
+}
+const topLine = r => (r.top || []).slice(0,2).map(x => `${esc(x.name)} ${fmt(x.price)}${x.detail ? "・"+esc(x.detail) : ""}`).join("<br>");
+
+$("go").onclick = async () => {
+  if (busy) return; startRun();
+  try { await ({site:runSite, dates:runDates, hols:runHols, dests:runDests})[st.mode](); }
+  catch(e) { res.innerHTML = `<div class="notice">${esc(errText(e))}</div>`; }
+  finally { endRun(); }
+};
+const softFail = (x, e) => { if (e && FATAL.includes(e.code)) throw e; x.state = "failed"; x.stateText = "查詢失敗"; };
+
+/* 要比的地點：同一城市進出 → 所有已選地點；不同城市進出 → 那一組 */
+function places(t0 = trip()){
+  if (st.flow === "single" && !t0.oj) return [{key:t0.inC, label:nm(t0.inC), hotelCity:nm(t0.inC), t:t0}];
+  if (t0.oj) return [{key:t0.inC+"-"+t0.outC, label:`${nm(t0.inC)}進／${nm(t0.outC)}出`, hotelCity:nm(t0.inC), t:t0}];
+  return st.picks.map(c => ({key:c, label:nm(c), hotelCity:nm(c), t:Object.assign({}, t0, {inC:c, outC:c, oj:false})}));
+}
+function dateCombos(t0){
+  const outs = [], rets = [];
+  for (let i = -st.fxOut; i <= st.fxOut; i++) { const d = add(t0.s, i); if (D(d) >= today) outs.push(d); }
+  for (let j = -st.fxRet; j <= st.fxRet; j++) rets.push(add(t0.e, j));
+  const combos = []; outs.forEach(o => rets.forEach(r => { if (r > o) combos.push([o, r]); }));
+  return {outs, rets, combos};
+}
+const cellLink = (v, url, cls = "") => `<td class="${cls}">${url ? `<a href="${url}" target="_blank" rel="noopener">${fmt(v)}</a>` : fmt(v)}</td>`;
+
+/* 比網站：每個地點 × (Google 航班、Trip.com、Booking.com) */
+async function runSite(){
+  const t0 = trip(), pf = paxFactor(), P = places(t0), heads = st.adults + st.kids;
+  res.innerHTML = `<div class="status" id="status"></div>
+    <div><div class="res-h">${md(t0.s)}–${md(t0.e)}・${t0.nights+1}天${t0.nights}夜・${paxText()}<small>機票為全家${t0.oj ? "兩段單程加總" : "來回"}；住宿為 Booking.com ${t0.nights} 晚總價最低；點價格開搜尋結果</small></div><div class="grid-wrap" id="grid"></div></div>
+    <div ${P.length < 2 ? "hidden" : ""}><div class="res-h">機＋酒總價排名<small>每個地點取最便宜的機票網站＋最便宜住宿</small></div><div id="rk"></div></div>
+    <div id="strip"></div><p class="hint" id="bh"></p>`;
+  const R = P.map(p => ({p, g:null, tr:null, h:null}));
+  const total = r => { const f = [r.g, r.tr].filter(x => x && x.pp).map(x => x.pp); return f.length && r.h && r.h.price ? Math.min(...f)*pf + r.h.price : null; };
+  const st8 = x => !x ? `<td class="na">…</td>` : x.load ? `<td class="na">讀取中</td>` : null;
+  const draw = () => {
+    const tots = R.map(total).filter(Boolean), tmin = tots.length ? Math.min(...tots) : null;
+    const fmin = Math.min(...R.flatMap(r => [r.g, r.tr]).filter(x => x && x.pp).map(x => x.pp), Infinity);
+    const hmin = Math.min(...R.map(r => r.h && r.h.price).filter(Boolean), Infinity);
+    $("grid").innerHTML = `<table class="grid"><thead><tr><th>${P.length < 2 ? "" : "地點"}</th><th>Google 航班</th><th>Trip.com</th><th>Booking 住宿</th><th>機＋酒合計</th><th>每人</th></tr></thead><tbody>` +
+      R.map(r => {
+        const fl = x => st8(x) || (x.pp ? cellLink(x.pp*pf, x.url, x.pp === fmin && R.length*2 > 1 ? "best" : "") : `<td class="na"><a href="${x.url}" target="_blank" rel="noopener">${x.blocked ? "驗證" : "無"}</a></td>`);
+        const ht = st8(r.h) || (r.h.price ? cellLink(r.h.price, r.h.url, r.h.price === hmin && R.length > 1 ? "best" : "") : `<td class="na"><a href="${r.h.url}" target="_blank" rel="noopener">${r.h.blocked ? "驗證" : "無"}</a></td>`);
+        const tt = total(r);
+        return `<tr><th>${esc(r.p.label)}</th>${fl(r.g)}${fl(r.tr)}${ht}<td class="${tt && tt === tmin ? "best" : tt ? "" : "na"}">${fmt(tt)}</td><td class="${tt ? "" : "na"}">${tt ? fmt(tt/heads) : "—"}</td></tr>`;
+      }).join("") + `</tbody></table>`;
+    const list = R.map(r => {
+      const fs = [["Google 航班", r.g], ["Trip.com", r.tr]].filter(([,x]) => x && x.pp).sort((a,b) => a[1].pp - b[1].pp)[0];
+      const tt = total(r);
+      const sub = [fs ? `機票 ${fmt(fs[1].pp*pf)}（${fs[0]}）${fs[1].top1 ? "・"+fs[1].top1 : ""}` : "", r.h && r.h.price ? `住宿 ${fmt(r.h.price)}${r.h.name ? "・"+esc(r.h.name) : ""}` : ""].filter(Boolean).join("<br>");
+      return {label:r.p.label, sub, price:tt, pp:tt ? tt/heads : null, url: fs ? fs[1].url : null,
+        state: (r.g && r.tr && r.h && !r.g.load && !r.tr.load && !r.h.load && !tt) ? "failed" : "", stateText: (r.g && r.tr && r.h && !tt) ? "缺少價格" : "等待中"};
+    });
+    $("rk").innerHTML = rankHTML(list);
+  };
+  draw();
+  const flight = async (r, site, key, name) => {
+    r[key] = {load:true}; draw(); setStatus(`查 ${r.p.label}・${name}…`, true);
+    try {
+      const x = await tripFare(site, r.p.t);
+      r[key] = {pp:x.pp, url:x.url, blocked:x.blocked, top1: x.legs ? "" : (x.top && x.top[0] ? `${esc(x.top[0].name)} ${esc(x.top[0].detail || "")}` : "")};
+      if (P.length === 1 && x.dates && x.dates.length > 2) drawStrip(x.dates);
+    } catch(e) { if (e && FATAL.includes(e.code)) throw e; r[key] = {pp:null, url:site === "g" ? U.gRT(r.p.t.o, r.p.t.inC, r.p.t.s, r.p.t.e) : ""}; }
+    draw();
+  };
+  for (const r of R) {
+    if (stopFlag) break; await flight(r, "g", "g", "Google 航班");
+    if (stopFlag) break; await flight(r, "t", "tr", "Trip.com");
+    if (stopFlag) break;
+    const url = U.booking(r.p.hotelCity, t0.s, t0.e);
+    r.h = {load:true}; draw(); setStatus(`查 ${r.p.label}・Booking 住宿…`, true);
+    try {
+      const {text, blocked} = await readPage(url, RE.b, `Booking.com：${r.p.hotelCity} 住宿 ${md(t0.s)}–${md(t0.e)}（${t0.nights} 晚）`, "hotel");
+      if (blocked) r.h = {url, blocked:true};
+      else { const x = await extract("hotel", `${r.p.hotelCity} ${t0.s}~${t0.e} ${paxText()}`, text); r.h = {url, price:x.lowest || null, name: x.top && x.top[0] ? x.top[0].name : ""}; }
+    } catch(e) { if (e && FATAL.includes(e.code)) throw e; r.h = {url, price:null}; }
+    draw();
+    const tt = total(r); if (tt) remember(`${t0.o}→${r.p.label} ${md(t0.s)}–${md(t0.e)} 機＋酒`, tt);
+  }
+  const best = R.map(r => [r, total(r)]).filter(x => x[1]).sort((a,b) => a[1] - b[1])[0];
+  $("bh").textContent = best ? `最划算：${best[0].p.label}，機＋酒全家約 ${fmt(best[1])}。橘色是各欄最便宜的價格。` : "";
+  setStatus(doneText(), false);
+}
+function drawStrip(dates){
+  const ok = dates.filter(d => d && d.price > 0).slice(0, 16); if (!ok.length) return;
+  const pf = paxFactor(), max = Math.max(...ok.map(d => d.price)), min = Math.min(...ok.map(d => d.price));
+  $("strip").innerHTML = `<div class="res-h">同樣天數、前後幾天出發<small>Trip.com・全家來回</small></div><div class="bars">` +
+    ok.map(d => `<div class="bar ${d.price===min?"best":""}"><span class="lab">${esc(d.range)}</span><span class="track"><span class="fill" style="width:${Math.max(6,d.price/max*100)}%"></span></span><span class="p">${fmt(d.price*pf)}</span></div>`).join("") +
+    `</div>`;
+}
+
+/* 比日期：每個地點 × 去回程日期組合 */
+async function runDates(){
+  const t0 = trip(), pf = paxFactor(), P = places(t0), {outs, rets, combos} = dateCombos(t0);
+  res.innerHTML = `<div class="status" id="status"></div>
+    <div><div class="res-h">${P.length > 1 ? "地點 × 日期組合" : esc(P[0].label) + "・去程 × 回程"}・全家機票總價<small>Google 航班${t0.oj ? "・兩段單程加總" : "・來回"}・點價格開搜尋結果</small></div><div class="grid-wrap" id="grid"></div></div>
+    <div><div class="res-h">最便宜的 5 個組合</div><div id="top"></div></div><p class="hint" id="bh"></p>`;
+  const cell = {};   // place|out|ret → {pp,url,blocked}
+  const drawSingle = () => {
+    const p = P[0], all = Object.values(cell).filter(x => x.pp).map(x => x.pp), min = all.length ? Math.min(...all) : null;
+    $("grid").innerHTML = `<table class="grid"><thead><tr><th>去程 ＼ 回程</th>${rets.map(r => `<th>${md(r)}</th>`).join("")}</tr></thead><tbody>` +
+      outs.map(o => `<tr><th>${md(o)}</th>${rets.map(r => {
+        if (r <= o) return `<td class="na">—</td>`;
+        const c = cell[p.key+"|"+o+"|"+r]; if (!c) return `<td class="na">…</td>`;
+        if (!c.pp) return `<td class="na">${c.blocked ? "驗證" : "無"}</td>`;
+        return `<td class="${c.pp === min ? "best" : ""}"><a href="${c.url}" target="_blank" rel="noopener">${fmt(c.pp*pf)}</a><br><small style="font-weight:400;color:var(--muted)">${span(o,r)}天</small></td>`;
+      }).join("")}</tr>`).join("") + `</tbody></table>`;
+  };
+  const draw = () => {
+    if (P.length === 1) drawSingle(); else drawMulti();
+    drawTop();
+  };
+  const drawMulti = () => {
+    const all = Object.values(cell).filter(x => x.pp).map(x => x.pp), min = all.length ? Math.min(...all) : null;
+    $("grid").innerHTML = `<table class="grid"><thead><tr><th>地點 ＼ 去程→回程</th>${combos.map(([o,r]) => `<th>${md(o)}<br>→${md(r)}<br>${span(o,r)}天</th>`).join("")}</tr></thead><tbody>` +
+      P.map(p => {
+        const row = combos.map(([o,r]) => cell[p.key+"|"+o+"|"+r]), rmin = Math.min(...row.filter(x => x && x.pp).map(x => x.pp), Infinity);
+        return `<tr><th>${esc(p.label)}</th>${row.map(c => !c ? `<td class="na">…</td>` : !c.pp ? `<td class="na">${c.blocked ? "驗證" : "無"}</td>`
+          : `<td class="${c.pp === min ? "best" : ""}"><a href="${c.url}" target="_blank" rel="noopener">${fmt(c.pp*pf)}</a>${c.pp === rmin && c.pp !== min && P.length > 1 ? " ★" : ""}</td>`).join("")}</tr>`;
+      }).join("") + `</tbody></table>`;
+  };
+  const drawTop = () => {
+    const list = Object.entries(cell).filter(([,c]) => c.pp).sort((a,b) => a[1].pp - b[1].pp).slice(0,5).map(([k,c]) => {
+      const [key, o, r] = k.split("|"); const p = P.find(x => x.key === key);
+      return {label:`${P.length > 1 ? p.label + "・" : ""}${md(o)} 出發 ${md(r)} 回`, sub:`${span(o,r)}天${span(o,r)-1}夜`, price:c.pp*pf, pp:c.pp, url:c.url};
+    });
+    $("top").innerHTML = list.length ? rankHTML(list, {keepOrder:true}) : `<p class="hint">查到價格後會列在這裡。</p>`;
+  };
+  draw();
+  let k = 0;
+  const total = t0.oj ? new Set(combos.flat()).size : P.length * combos.length;
+  for (const p of P) {
+    if (stopFlag) break;
+    if (p.t.oj) {
+      const legO = {}, legR = {};
+      const jobs = [...outs.map(d => ["o", d]), ...rets.map(d => ["r", d])];
+      for (const [w, d] of jobs) {
+        if (stopFlag) break; setStatus(`查 ${p.label} ${w === "o" ? "去程" : "回程"} ${md(d)}（${++k}/${jobs.length}）…`, true);
+        try { const x = w === "o" ? await fare("g", p.t.o, p.t.inC, d) : await fare("g", p.t.outC, p.t.o, d); (w === "o" ? legO : legR)[d] = x; }
+        catch(e) { if (e && FATAL.includes(e.code)) throw e; }
+        combos.forEach(([o,r]) => { if (legO[o] && legR[r]) cell[p.key+"|"+o+"|"+r] = {pp: legO[o].pp && legR[r].pp ? legO[o].pp + legR[r].pp : null, url: legO[o].url}; });
+        draw();
+      }
+    } else {
+      for (const [o, r] of combos) {
+        if (stopFlag) break; setStatus(`查 ${p.label} ${md(o)}–${md(r)}（${++k}/${total}）…`, true);
+        try { const x = await fare("g", p.t.o, p.t.inC, o, r); cell[p.key+"|"+o+"|"+r] = {pp:x.pp, url:x.url, blocked:x.blocked}; }
+        catch(e) { if (e && FATAL.includes(e.code)) throw e; cell[p.key+"|"+o+"|"+r] = {pp:null}; }
+        draw();
+      }
+    }
+    const mine = Object.entries(cell).filter(([kk,c]) => kk.startsWith(p.key+"|") && c.pp).sort((a,b) => a[1].pp - b[1].pp)[0];
+    if (mine) { const [, o, r] = mine[0].split("|"); remember(`${t0.o}→${p.label} 最便宜日期 ${md(o)}–${md(r)}`, mine[1].pp*pf); }
+  }
+  const best = Object.entries(cell).filter(([,c]) => c.pp).sort((a,b) => a[1].pp - b[1].pp)[0];
+  if (best) { const [key, o, r] = best[0].split("|"); $("bh").textContent = `最便宜：${P.find(x => x.key === key).label}，${md(o)} 出發、${md(r)} 回。要改日期可到「02 什麼時候」直接修改。`; }
+  setStatus(doneText(), false);
+}
+
+/* 比連假：已選地點 × 連假 */
+const hRange = h => { const r = holRange(h); const s = D(r.s) < today ? iso(today) : r.s; const e = r.s === r.e ? add(r.e,1) : r.e; return {s, e, leave:r.leave}; };
+async function runHols(){
+  const pf = paxFactor(), t0 = trip(), hols = holList();
+  const rows = places(t0).map(p => ({c:p.key, label:p.label, oj:p.t.oj}));
+  res.innerHTML = `<div class="status" id="status"></div>
+    <div><div class="res-h">地點 × 連假・全家機票總價<small>Google 航班・${st.leave ? "含請假方案" : "只放國定假"}・點價格可開搜尋結果</small></div><div class="grid-wrap" id="grid"></div></div>
+    <div><div class="res-h">最便宜的組合</div><div id="rk"></div></div><p class="hint" id="bh"></p>`;
+  const cell = {};
+  const draw = () => {
+    const vals = Object.values(cell).filter(x => x.pp).map(x => x.pp), min = vals.length ? Math.min(...vals) : null;
+    const rowMin = {}; rows.forEach(r => { const v = hols.map((h,j) => cell[r.c+"|"+j]?.pp).filter(Boolean); rowMin[r.c] = v.length ? Math.min(...v) : null; });
+    $("grid").innerHTML = `<table class="grid"><thead><tr><th>地點 ＼ 連假</th>${hols.map(h => { const r = hRange(h); return `<th>${esc(h.nm)}<br>${md(r.s)}–${md(r.e)}</th>`; }).join("")}</tr></thead><tbody>` +
+      rows.map(r => `<tr><th>${esc(r.label)}</th>${hols.map((h,j) => {
+        const c = cell[r.c+"|"+j]; if (!c) return `<td class="na">…</td>`;
+        if (!c.pp) return `<td class="na">${c.blocked ? "驗證" : "無"}</td>`;
+        const mark = c.pp === min ? "best" : "";
+        return `<td class="${mark}"><a href="${c.url}" target="_blank" rel="noopener">${fmt(c.pp*pf)}</a>${c.pp === rowMin[r.c] && rows.length > 1 && c.pp !== min ? " ★" : ""}</td>`;
+      }).join("")}</tr>`).join("") + `</tbody></table>`;
+    const list = Object.entries(cell).filter(([,c]) => c.pp).sort((a,b) => a[1].pp - b[1].pp).slice(0,5).map(([k,c]) => {
+      const [dc, j] = k.split("|"); const h = hols[+j], r = hRange(h), row = rows.find(x => x.c === dc);
+      return {label:`${row.label}・${h.nm}`, sub:`${md(r.s)}–${md(r.e)}・${span(r.s,r.e)}天${r.leave?`・請假${r.leave}天`:""}`, price:c.pp*pf, pp:c.pp, url:c.url};
+    });
+    $("rk").innerHTML = list.length ? rankHTML(list, {keepOrder:true}) : `<p class="hint">查到價格後會列在這裡。</p>`;
+  };
+  draw();
+  const jobs = []; hols.forEach((h,j) => rows.forEach(r => jobs.push([r,h,j])));  // 依連假順序查，先看到每個連假的各地價格
+  for (let k = 0; k < jobs.length && !stopFlag; k++) {
+    const [r, h, j] = jobs[k], rg = hRange(h);
+    setStatus(`查 ${r.label}・${h.nm}（${k+1}/${jobs.length}）…`, true);
+    try {
+      const t = r.oj ? trip(rg.s, rg.e) : {o:t0.o, inC:r.c, outC:r.c, s:rg.s, e:rg.e, oj:false};
+      const x = await tripFare("g", t);
+      cell[r.c+"|"+j] = {pp:x.pp, url:x.url, blocked:x.blocked};
+      if (x.pp) remember(`${t0.o}→${r.label} ${h.nm}`, x.pp*pf);
+    } catch(e) { if (e && FATAL.includes(e.code)) throw e; cell[r.c+"|"+j] = {pp:null, url:""}; }
+    draw();
+  }
+  const best = Object.entries(cell).filter(([,c]) => c.pp).sort((a,b) => a[1].pp - b[1].pp)[0];
+  if (best) { const [dc, j] = best[0].split("|"); $("bh").textContent = `最便宜：${rows.find(x => x.c === dc).label}・${hols[+j].nm}。★ 是每個地點自己最便宜的連假。點連假晶片帶入日期，再用「比網站」加上住宿。`; }
+  setStatus(doneText(), false);
+}
+
+/* 比目的地：已選地點，同一段日期，機票（＋住宿） */
+async function runDests(){
+  const t0 = trip(), pf = paxFactor(), withH = st.withHotel;
+  res.innerHTML = `<div class="status" id="status"></div>
+    <div><div class="res-h">${md(t0.s)}–${md(t0.e)}・${t0.nights+1}天${t0.nights}夜・從 ${esc(t0.o)} 出發<small>${withH ? "全家機票（Google 航班）＋住宿（Booking.com 最低價）" : "全家來回機票（Google 航班）"}・依總價排序</small></div><div id="rk"></div></div><p class="hint" id="bh"></p>`;
+  const items = st.picks.map(c => ({c, label:nm(c), sub:c, url:U.gRT(t0.o,c,t0.s,t0.e), f:null, h:null}));
+  const recalc = x => {
+    const parts = [];
+    if (x.f) parts.push(`機票 ${fmt(x.f*pf)}${x.fTop ? "・"+x.fTop : ""}`);
+    else if (x.fFail) parts.push(`機票：${x.fFail}`);
+    if (withH) { if (x.h) parts.push(`住宿 ${fmt(x.h)}${x.hName ? "・"+esc(x.hName) : ""}`); else if (x.hFail) parts.push(`住宿：${x.hFail}`); }
+    x.sub = `${x.c}　` + parts.join("<br>");
+    x.price = x.f ? x.f*pf + (withH ? (x.h || 0) : 0) : null;
+    x.pp = x.price ? x.price / (st.adults + st.kids) : null;
+    x.label = x.price && withH && !x.h && x.hFail ? `${nm(x.c)}（未含住宿）` : nm(x.c);
+  };
+  const draw = () => $("rk").innerHTML = rankHTML(items);
+  draw();
+  for (let k = 0; k < items.length && !stopFlag; k++) {
+    const x = items[k]; x.stateText = "查機票…"; draw(); setStatus(`查 ${x.label} 機票（${k+1}/${items.length}）…`, true);
+    try {
+      const r = await fare("g", t0.o, x.c, t0.s, t0.e);
+      if (r.pp) { x.f = r.pp; x.fTop = (r.top && r.top[0]) ? `${esc(r.top[0].name)} ${esc(r.top[0].detail || "")}` : ""; }
+      else x.fFail = r.blocked ? "需人機驗證" : "沒讀到價格";
+    } catch(e) { if (e && FATAL.includes(e.code)) throw e; x.fFail = "查詢失敗"; }
+    recalc(x); if (!x.price) { x.state = "failed"; x.stateText = x.fFail; } draw();
+    if (withH && x.f && !stopFlag) {
+      setStatus(`查 ${x.label} 住宿（${k+1}/${items.length}）…`, true);
+      try {
+        const hurl = U.booking(nm(x.c), t0.s, t0.e);
+        const {text, blocked} = await readPage(hurl, RE.b, `Booking.com：${nm(x.c)} 住宿 ${md(t0.s)}–${md(t0.e)}（${t0.nights} 晚）`, "hotel");
+        if (blocked) x.hFail = "需人機驗證";
+        else { const r = await extract("hotel", `${nm(x.c)} ${t0.s}~${t0.e} ${paxText()}`, text); if (r.lowest) { x.h = r.lowest; x.hName = r.top && r.top[0] ? r.top[0].name : ""; } else x.hFail = "沒讀到價格"; }
+      } catch(e) { if (e && FATAL.includes(e.code)) throw e; x.hFail = "查詢失敗"; }
+      recalc(x); draw();
+    }
+    if (x.price) remember(`${t0.o}→${nm(x.c)} ${md(t0.s)}–${md(t0.e)}${withH && x.h ? " 機＋酒" : ""}`, x.price);
+  }
+  const best = items.filter(x => x.price).sort((a,b) => a.price - b.price)[0];
+  $("bh").textContent = best ? `這段日期最便宜的是 ${nm(best.c)}。可再用「比網站」看各網站價格，或「比日期」找更便宜的出發日。` : "";
+  setStatus(doneText(), false);
+}
+
+update();
+})();
+</script>
+
+</body>
+</html>
